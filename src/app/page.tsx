@@ -289,20 +289,32 @@ export default function SipUpDomainSales() {
             <CardHeader>
               <CardTitle className="text-2xl text-[#8B4513] text-center">Teklif Formu</CardTitle>
               <CardDescription className="text-center">
-                $750 üzerindeki teklifler değerlendirilecektir
+                $790 üzerindeki teklifler değerlendirilecektir
               </CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSubmit} className="space-y-4">
+              {/* الفورم الآن يُرسل مباشرة إلى formsubmit.co */}
+              <form
+                action="https://formsubmit.co/0xdseller@gmail.com"
+                method="POST"
+                className="space-y-4"
+              >
+                {/* حماية من السبام */}
+                <input type="text" name="_honey" style={{ display: 'none' }} />
+                <input type="hidden" name="_captcha" value="false" />
+                <input type="hidden" name="_next" value={`${window.location.origin}/teklif-tesekkur`} />
+                <input type="hidden" name="_subject" value="Yeni Teklif: sipup.com.tr" />
+                <input type="hidden" name="_template" value="table" />
+
                 <div className="grid md:grid-cols-2 gap-4">
                   <div>
                     <Label htmlFor="name">Adınız Soyadınız</Label>
                     <Input
                       id="name"
                       name="name"
-                      value={formData.name}
-                      onChange={handleInputChange}
+                      type="text"
                       required
+                      placeholder="Ahmet Yılmaz"
                       className="border-[#8B4513]"
                     />
                   </div>
@@ -312,9 +324,8 @@ export default function SipUpDomainSales() {
                       id="email"
                       name="email"
                       type="email"
-                      value={formData.email}
-                      onChange={handleInputChange}
                       required
+                      placeholder="ahmet@example.com"
                       className="border-[#8B4513]"
                     />
                   </div>
@@ -327,10 +338,18 @@ export default function SipUpDomainSales() {
                     name="price"
                     type="number"
                     min="790"
-                    value={formData.price}
-                    onChange={handleInputChange}
                     required
+                    placeholder="1200"
                     className="border-[#8B4513]"
+                    onInvalid={(e) => {
+                      const input = e.target as HTMLInputElement;
+                      if (input.value && parseFloat(input.value) < 790) {
+                        input.setCustomValidity('Minimum teklif $790 olmalıdır');
+                      } else {
+                        input.setCustomValidity('');
+                      }
+                    }}
+                    onInput={(e) => (e.target as HTMLInputElement).setCustomValidity('')}
                   />
                 </div>
 
@@ -339,9 +358,8 @@ export default function SipUpDomainSales() {
                   <Textarea
                     id="message"
                     name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
                     rows={4}
+                    placeholder="Atom.com üzerinden ödeme yapmak istiyorum..."
                     className="border-[#8B4513]"
                   />
                 </div>
@@ -349,149 +367,144 @@ export default function SipUpDomainSales() {
                 <Button
                   type="submit"
                   className="w-full bg-[#8B4513] hover:bg-[#654321] text-white py-3"
-                  disabled={isSubmitting}
                 >
-                  {isSubmitting ? 'Gönderiliyor...' : 'Teklifi Gönder'}
+                  Teklifi Gönder
                 </Button>
 
-                {submitMessage && (
-                  <div className={`text-center p-3 rounded-lg ${submitMessage.includes('başarıyla') ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
-                    {submitMessage}
-                  </div>
-                )}
+                <p className="text-xs text-center text-gray-500 mt-4">
+                  Teklifiniz doğrudan <strong>0xdseller@gmail.com</strong> adresine gönderilecektir.
+                </p>
               </form>
             </CardContent>
           </Card>
-        </div>
-      </section>
 
-      {/* Secure Purchase Process */}
-      <section className="py-20 px-4 bg-white">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Güvenli Satın Alma Süreci
-          </h2>
+          {/* Secure Purchase Process */}
+          <section className="py-20 px-4 bg-white">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                Güvenli Satın Alma Süreci
+              </h2>
 
-          <div className="space-y-6">
-            {[
-              { step: 1, title: 'Teklif Verin', desc: 'Formu doldurun ve teklifinizi gönderin' },
-              { step: 2, title: 'Escrow ile Ödeme', desc: 'Atom.com üzerinden güvenli ödeme yapın' },
-              { step: 3, title: '24 Saatte Transfer', desc: 'Domain 24 saat içinde transfer edilir' },
-              { step: 4, title: 'Fatura ve Sertifika', desc: 'Fatura ve mülkiyet sertifikası alın' }
-            ].map((item) => (
-              <div key={item.step} className="flex items-center gap-4">
-                <div className="w-12 h-12 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold">
-                  {item.step}
-                </div>
-                <div className="flex-1">
-                  <h3 className="font-semibold text-lg text-[#8B4513]">{item.title}</h3>
-                  <p className="text-gray-600">{item.desc}</p>
-                </div>
-                <Shield className="w-8 h-8 text-green-500" />
+              <div className="space-y-6">
+                {[
+                  { step: 1, title: 'Teklif Verin', desc: 'Formu doldurun ve teklifinizi gönderin' },
+                  { step: 2, title: 'Escrow ile Ödeme', desc: 'Atom.com üzerinden güvenli ödeme yapın' },
+                  { step: 3, title: '24 Saatte Transfer', desc: 'Domain 24 saat içinde transfer edilir' },
+                  { step: 4, title: 'Fatura ve Sertifika', desc: 'Fatura ve mülkiyet sertifikası alın' }
+                ].map((item) => (
+                  <div key={item.step} className="flex items-center gap-4">
+                    <div className="w-12 h-12 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold">
+                      {item.step}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="font-semibold text-lg text-[#8B4513]">{item.title}</h3>
+                      <p className="text-gray-600">{item.desc}</p>
+                    </div>
+                    <Shield className="w-8 h-8 text-green-500" />
+                  </div>
+                ))}
               </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* FAQ Section */}
-      <section className="py-20 px-4">
-        <div className="max-w-4xl mx-auto">
-          <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
-            Sıkça Sorulan Sorular
-          </h2>
-
-          <Accordion type="single" collapsible className="space-y-4">
-            <AccordionItem value="item-1" className="border-2 border-[#8B4513] rounded-lg px-4">
-              <AccordionTrigger className="text-left text-[#8B4513]">
-                Domain gerçekten mevcut mu?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-700">
-                Evet, domain Atom.com üzerinden satın alınabilir durumda ve anında transfer için hazırdır.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-2" className="border-2 border-[#8B4513] rounded-lg px-4">
-              <AccordionTrigger className="text-left text-[#8B4513]">
-                İçecekler dışında kullanılabilir mi?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-700">
-                Evet, ancak içecek sektörü için en uygun ve değerli kullanım alanıdır.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-3" className="border-2 border-[#8B4513] rounded-lg px-4">
-              <AccordionTrigger className="text-left text-[#8B4513]">
-                Daha yüksek teklif alırsam ne olur?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-700">
-                En yüksek teklif kazanır. Sizin teklifinizden daha yüksek bir teklif gelmezse domain sizin olur.
-              </AccordionContent>
-            </AccordionItem>
-
-            <AccordionItem value="item-4" className="border-2 border-[#8B4513] rounded-lg px-4">
-              <AccordionTrigger className="text-left text-[#8B4513]">
-                Transfer süreci ne kadar sürer?
-              </AccordionTrigger>
-              <AccordionContent className="text-gray-700">
-                Ödeme onaylandıktan sonra transfer 24 saat içinde tamamlanır.
-              </AccordionContent>
-            </AccordionItem>
-          </Accordion>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer className="bg-[#8B4513] text-white py-12 px-4">
-        <div className="max-w-6xl mx-auto">
-          <div className="grid md:grid-cols-4 gap-8">
-            <div>
-              <h3 className="text-xl font-bold mb-4">sipup.com.tr</h3>
-              <p className="text-sm opacity-90">
-                Türkiye'nin premium kahve teslimat domaini
-              </p>
             </div>
+          </section>
 
-            <div>
-              <h4 className="font-semibold mb-3">Hızlı Linkler</h4>
-              <ul className="space-y-2 text-sm">
-                <li><a href="#offer-form" className="hover:text-[#FFD700] transition-colors">İletişim</a></li>
-              </ul>
+          {/* FAQ Section */}
+          <section className="py-20 px-4">
+            <div className="max-w-4xl mx-auto">
+              <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
+                Sıkça Sorulan Sorular
+              </h2>
+
+              <Accordion type="single" collapsible className="space-y-4">
+                <AccordionItem value="item-1" className="border-2 border-[#8B4513] rounded-lg px-4">
+                  <AccordionTrigger className="text-left text-[#8B4513]">
+                    Domain gerçekten mevcut mu?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-700">
+                    Evet, domain Atom.com üzerinden satın alınabilir durumda ve anında transfer için hazırdır.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-2" className="border-2 border-[#8B4513] rounded-lg px-4">
+                  <AccordionTrigger className="text-left text-[#8B4513]">
+                    İçecekler dışında kullanılabilir mi?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-700">
+                    Evet, ancak içecek sektörü için en uygun ve değerli kullanım alanıdır.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-3" className="border-2 border-[#8B4513] rounded-lg px-4">
+                  <AccordionTrigger className="text-left text-[#8B4513]">
+                    Daha yüksek teklif alırsam ne olur?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-700">
+                    En yüksek teklif kazanır. Sizin teklifinizden daha yüksek bir teklif gelmezse domain sizin olur.
+                  </AccordionContent>
+                </AccordionItem>
+
+                <AccordionItem value="item-4" className="border-2 border-[#8B4513] rounded-lg px-4">
+                  <AccordionTrigger className="text-left text-[#8B4513]">
+                    Transfer süreci ne kadar sürer?
+                  </AccordionTrigger>
+                  <AccordionContent className="text-gray-700">
+                    Ödeme onaylandıktan sonra transfer 24 saat içinde tamamlanır.
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
+          </section>
 
-            <div>
-              <h4 className="font-semibold mb-3">İletişim</h4>
-              <ul className="space-y-2 text-sm">
-                <li className="flex items-center gap-2">
-                  <Mail className="w-4 h-4" />
-                  0xdseller@gmail.com
-                </li>
-                <li className="flex items-center gap-2">
-                  <MessageCircle className="w-4 h-4" />
-                  WhatsApp: +212 775 602 409
-                </li>
-              </ul>
-            </div>
+          {/* Footer */}
+          <footer className="bg-[#8B4513] text-white py-12 px-4">
+            <div className="max-w-6xl mx-auto">
+              <div className="grid md:grid-cols-4 gap-8">
+                <div>
+                  <h3 className="text-xl font-bold mb-4">sipup.com.tr</h3>
+                  <p className="text-sm opacity-90">
+                    Türkiye'nin premium kahve teslimat domaini
+                  </p>
+                </div>
 
-            <div>
-              <h4 className="font-semibold mb-3">Sosyal Medya</h4>
-              <div className="flex gap-3">
-                <a href="https://x.com/0xdseller" className="bg-white text-[#8B4513] w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#FFD700] transition-colors">
-                  <X className="w-5 h-5" />
-                </a>
-                <a href="mailto:0xdseller@gmail.com
+                <div>
+                  <h4 className="font-semibold mb-3">Hızlı Linkler</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li><a href="#offer-form" className="hover:text-[#FFD700] transition-colors">İletişim</a></li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold mb-3">İletişim</h4>
+                  <ul className="space-y-2 text-sm">
+                    <li className="flex items-center gap-2">
+                      <Mail className="w-4 h-4" />
+                      0xdseller@gmail.com
+                    </li>
+                    <li className="flex items-center gap-2">
+                      <MessageCircle className="w-4 h-4" />
+                      WhatsApp: +212 775 602 409
+                    </li>
+                  </ul>
+                </div>
+
+                <div>
+                  <h4 className="font-semibold mb-3">Sosyal Medya</h4>
+                  <div className="flex gap-3">
+                    <a href="https://x.com/0xdseller" className="bg-white text-[#8B4513] w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#FFD700] transition-colors">
+                      <X className="w-5 h-5" />
+                    </a>
+                    <a href="mailto:0xdseller@gmail.com
 " className="bg-white text-[#8B4513] w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#FFD700] transition-colors">
-                  <MessageCircle className="w-5 h-5" />
-                </a>
+                      <MessageCircle className="w-5 h-5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm">
+                <p>&copy; 2025 sipup.com.tr. Tüm hakları saklıdır.</p>
               </div>
             </div>
-          </div>
-
-          <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm">
-            <p>&copy; 2025 sipup.com.tr. Tüm hakları saklıdır.</p>
-          </div>
+          </footer>
         </div>
-      </footer>
-    </div>
-  )
+        )
 }
