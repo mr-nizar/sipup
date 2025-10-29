@@ -11,22 +11,11 @@ import { Badge } from '@/components/ui/badge'
 import { Clock, CheckCircle, Shield, Smartphone, Coffee, MapPin, Star, MessageCircle, Mail, X, ChevronRight, Timer } from 'lucide-react'
 
 export default function SipUpDomainSales() {
-  const [countdown, setCountdown] = useState(7 * 24 * 60 * 60) // 7 days in seconds
-  const [formData, setFormData] = useState({
-    name: '',
-    email: '',
-    price: '',
-    message: ''
-  })
-  const [isSubmitting, setIsSubmitting] = useState(false)
-  const [submitMessage, setSubmitMessage] = useState('')
+  const [countdown, setCountdown] = useState(7 * 24 * 60 * 60) // 7 أيام
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCountdown(prev => {
-        if (prev <= 0) return 0
-        return prev - 1
-      })
+      setCountdown(prev => (prev <= 0 ? 0 : prev - 1))
     }, 1000)
 
     return () => clearInterval(timer)
@@ -38,65 +27,26 @@ export default function SipUpDomainSales() {
     const minutes = Math.floor((seconds % (60 * 60)) / 60)
     const secs = seconds % 60
 
-    return `${days}g ${hours}s ${minutes}d ${secs}s`
-  }
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsSubmitting(true)
-    setSubmitMessage('')
-
-    try {
-      const response = await fetch('/api/submit-offer', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(formData),
-      })
-
-      if (response.ok) {
-        setSubmitMessage('Teklifiniz başarıyla alındı! En kısa sürede size dönüş yapacağız.')
-        setFormData({ name: '', email: '', price: '', message: '' })
-      } else {
-        setSubmitMessage('Bir hata oluştu. Lütfen tekrar deneyin.')
-      }
-    } catch (error) {
-      setSubmitMessage('Bir hata oluştu. Lütfen tekrar deneyin.')
-    } finally {
-      setIsSubmitting(false)
-    }
-  }
-
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value
-    })
+    return `${days} gün ${hours} saat ${minutes} dk ${secs} sn`
   }
 
   return (
     <div className="min-h-screen bg-[#F9F6F2]">
       {/* Hero Section */}
       <section className="relative h-screen flex items-center justify-center overflow-hidden">
-        {/* Video Background */}
         <div className="absolute inset-0">
           <img
             src="/coffee-hero.jpg"
-            alt="Turkish Coffee"
+            alt="Türk Kahvesi"
             className="w-full h-full object-cover"
+            loading="eager"
           />
           <div className="absolute inset-0 bg-gradient-to-br from-[#8B4513] to-[#654321] opacity-80"></div>
         </div>
 
-        {/* Content */}
         <div className="relative z-10 text-center text-white px-4 max-w-4xl mx-auto">
           <div className="mb-6">
-            <img
-              src="/sipup-logo.png"
-              alt="SipUp Logo"
-              className="w-16 h-16 mx-auto mb-4"
-            />
+            <img src="/sipup-logo.png" alt="SipUp Logo" className="w-16 h-16 mx-auto mb-4" />
             <Badge className="bg-[#FFD700] text-[#8B4513] text-lg px-6 py-2 mb-4">
               <Timer className="w-4 h-4 mr-2" />
               Teklif Süresi: {formatCountdown(countdown)}
@@ -138,7 +88,7 @@ export default function SipUpDomainSales() {
         </div>
       </section>
 
-      {/* Why sipup.com.tr? Section */}
+      {/* Why sipup.com.tr? */}
       <section className="py-20 px-4">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -146,58 +96,27 @@ export default function SipUpDomainSales() {
           </h2>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Card className="border-2 border-[#8B4513] hover:shadow-lg transition-shadow">
-              <CardHeader className="text-center">
-                <div className="text-4xl mb-4">🇹🇷</div>
-                <CardTitle className="text-[#8B4513]">Güçlü Türk Kimliği</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  .com.tr = Yerel müşteriler için en yüksek güven seviyesi
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-[#8B4513] hover:shadow-lg transition-shadow">
-              <CardHeader className="text-center">
-                <div className="text-4xl mb-4">☕</div>
-                <CardTitle className="text-[#8B4513]">Kafe ve Teslimat İçin Mükemmel</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  "SipUp" = Yudumla ve devam et - mobil uygulamalar için ideal
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-[#8B4513] hover:shadow-lg transition-shadow">
-              <CardHeader className="text-center">
-                <div className="text-4xl mb-4">📱</div>
-                <CardTitle className="text-[#8B4513]">Mobil Uygulamaya Hazır</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  Kısa, akılda kalıcı, App Store için mükemmel
-                </CardDescription>
-              </CardContent>
-            </Card>
-
-            <Card className="border-2 border-[#8B4513] hover:shadow-lg transition-shadow">
-              <CardHeader className="text-center">
-                <div className="text-4xl mb-4">✅</div>
-                <CardTitle className="text-[#8B4513]">Yasal Güvenli</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <CardDescription className="text-center">
-                  VoIP ile çakışmaz - içecekler için mükemmel
-                </CardDescription>
-              </CardContent>
-            </Card>
+            {[
+              { emoji: 'TR', title: 'Güçlü Türk Kimliği', desc: '.com.tr = Yerel müşteriler için en yüksek güven seviyesi' },
+              { emoji: 'Coffee', title: 'Kafe ve Teslimat İçin Mükemmel', desc: '"SipUp" = Yudumla ve devam et - mobil uygulamalar için ideal' },
+              { emoji: 'Smartphone', title: 'Mobil Uygulamaya Hazır', desc: 'Kısa, akılda kalıcı, App Store için mükemmel' },
+              { emoji: 'Check', title: 'Yasal Güvenli', desc: 'VoIP ile çakışmaz - içecekler için mükemmel' }
+            ].map((item, i) => (
+              <Card key={i} className="border-2 border-[#8B4513] hover:shadow-lg transition-shadow">
+                <CardHeader className="text-center">
+                  <div className="text-4xl mb-4">{item.emoji}</div>
+                  <CardTitle className="text-[#8B4513]">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <CardDescription className="text-center">{item.desc}</CardDescription>
+                </CardContent>
+              </Card>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* Project Vision Section */}
+      {/* Project Vision */}
       <section className="py-20 px-4 bg-white">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
@@ -215,7 +134,7 @@ export default function SipUpDomainSales() {
                 <ul className="space-y-2">
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-[#FFD700]" />
-                    Anlı kahve teslimatı
+                    Anlık kahve teslimatı
                   </li>
                   <li className="flex items-center gap-2">
                     <CheckCircle className="w-5 h-5 text-[#FFD700]" />
@@ -236,25 +155,22 @@ export default function SipUpDomainSales() {
             <div className="relative">
               <img
                 src="/sipup-app-mockup.jpg"
-                alt="SipUp Mobile App"
+                alt="SipUp Mobil Uygulama"
                 className="rounded-lg shadow-lg w-full h-auto"
+                loading="lazy"
               />
             </div>
           </div>
         </div>
       </section>
 
-      {/* Pricing and Offers Section */}
+      {/* Pricing and Offers */}
       <section id="offer-form" className="py-20 px-4">
         <div className="max-w-4xl mx-auto">
-          <h2
-            className="text-4xl font-bold text-center mb-12 text-[#8B4513]"
-            style={{ fontFamily: 'Playfair Display, serif' }}
-          >
+          <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
             Fiyat ve Teklifler
           </h2>
 
-          {/* Grid مع تمركز البطاقة في المنتصف */}
           <div className="grid md:grid-cols-2 gap-8 justify-items-center">
             <Card className="border-2 border-[#8B4513] md:col-span-2 w-full max-w-md">
               <CardHeader className="text-center">
@@ -289,20 +205,18 @@ export default function SipUpDomainSales() {
             <CardHeader>
               <CardTitle className="text-2xl text-[#8B4513] text-center">Teklif Formu</CardTitle>
               <CardDescription className="text-center">
-                $790 üzerindeki teklifler değerlendirilecektir
+                $750 üzerindeki teklifler değerlendirilecektir
               </CardDescription>
             </CardHeader>
             <CardContent>
-              {/* الفورم الآن يُرسل مباشرة إلى formsubmit.co */}
               <form
                 action="https://formsubmit.co/0xdseller@gmail.com"
                 method="POST"
                 className="space-y-4"
               >
-                {/* حماية من السبام */}
                 <input type="text" name="_honey" style={{ display: 'none' }} />
                 <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_next" value={`${window.location.origin}/teklif-tesekkur`} />
+                <input type="hidden" name="_next" value="https://sipup.com.tr/teklif-tesekkur" />
                 <input type="hidden" name="_subject" value="Yeni Teklif: sipup.com.tr" />
                 <input type="hidden" name="_template" value="table" />
 
@@ -337,16 +251,16 @@ export default function SipUpDomainSales() {
                     id="price"
                     name="price"
                     type="number"
-                    min="790"
+                    min="750"
                     required
                     placeholder="1200"
                     className="border-[#8B4513]"
                     onInvalid={(e) => {
-                      const input = e.target as HTMLInputElement;
-                      if (input.value && parseFloat(input.value) < 790) {
-                        input.setCustomValidity('Minimum teklif $790 olmalıdır');
+                      const input = e.target as HTMLInputElement
+                      if (input.value && parseFloat(input.value) < 750) {
+                        input.setCustomValidity('Minimum teklif $750 olmalıdır')
                       } else {
-                        input.setCustomValidity('');
+                        input.setCustomValidity('')
                       }
                     }}
                     onInput={(e) => (e.target as HTMLInputElement).setCustomValidity('')}
@@ -377,134 +291,109 @@ export default function SipUpDomainSales() {
               </form>
             </CardContent>
           </Card>
-
-          {/* Secure Purchase Process */}
-          <section className="py-20 px-4 bg-white">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
-                Güvenli Satın Alma Süreci
-              </h2>
-
-              <div className="space-y-6">
-                {[
-                  { step: 1, title: 'Teklif Verin', desc: 'Formu doldurun ve teklifinizi gönderin' },
-                  { step: 2, title: 'Escrow ile Ödeme', desc: 'Atom.com üzerinden güvenli ödeme yapın' },
-                  { step: 3, title: '24 Saatte Transfer', desc: 'Domain 24 saat içinde transfer edilir' },
-                  { step: 4, title: 'Fatura ve Sertifika', desc: 'Fatura ve mülkiyet sertifikası alın' }
-                ].map((item) => (
-                  <div key={item.step} className="flex items-center gap-4">
-                    <div className="w-12 h-12 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold">
-                      {item.step}
-                    </div>
-                    <div className="flex-1">
-                      <h3 className="font-semibold text-lg text-[#8B4513]">{item.title}</h3>
-                      <p className="text-gray-600">{item.desc}</p>
-                    </div>
-                    <Shield className="w-8 h-8 text-green-500" />
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* FAQ Section */}
-          <section className="py-20 px-4">
-            <div className="max-w-4xl mx-auto">
-              <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
-                Sıkça Sorulan Sorular
-              </h2>
-
-              <Accordion type="single" collapsible className="space-y-4">
-                <AccordionItem value="item-1" className="border-2 border-[#8B4513] rounded-lg px-4">
-                  <AccordionTrigger className="text-left text-[#8B4513]">
-                    Domain gerçekten mevcut mu?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-700">
-                    Evet, domain Atom.com üzerinden satın alınabilir durumda ve anında transfer için hazırdır.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-2" className="border-2 border-[#8B4513] rounded-lg px-4">
-                  <AccordionTrigger className="text-left text-[#8B4513]">
-                    İçecekler dışında kullanılabilir mi?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-700">
-                    Evet, ancak içecek sektörü için en uygun ve değerli kullanım alanıdır.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-3" className="border-2 border-[#8B4513] rounded-lg px-4">
-                  <AccordionTrigger className="text-left text-[#8B4513]">
-                    Daha yüksek teklif alırsam ne olur?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-700">
-                    En yüksek teklif kazanır. Sizin teklifinizden daha yüksek bir teklif gelmezse domain sizin olur.
-                  </AccordionContent>
-                </AccordionItem>
-
-                <AccordionItem value="item-4" className="border-2 border-[#8B4513] rounded-lg px-4">
-                  <AccordionTrigger className="text-left text-[#8B4513]">
-                    Transfer süreci ne kadar sürer?
-                  </AccordionTrigger>
-                  <AccordionContent className="text-gray-700">
-                    Ödeme onaylandıktan sonra transfer 24 saat içinde tamamlanır.
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            </div>
-          </section>
-
-          {/* Footer */}
-          <footer className="bg-[#8B4513] text-white py-12 px-4">
-            <div className="max-w-6xl mx-auto">
-              <div className="grid md:grid-cols-4 gap-8">
-                <div>
-                  <h3 className="text-xl font-bold mb-4">sipup.com.tr</h3>
-                  <p className="text-sm opacity-90">
-                    Türkiye'nin premium kahve teslimat domaini
-                  </p>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold mb-3">Hızlı Linkler</h4>
-                  <ul className="space-y-2 text-sm">
-                    <li><a href="#offer-form" className="hover:text-[#FFD700] transition-colors">İletişim</a></li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold mb-3">İletişim</h4>
-                  <ul className="space-y-2 text-sm">
-                    <li className="flex items-center gap-2">
-                      <Mail className="w-4 h-4" />
-                      0xdseller@gmail.com
-                    </li>
-                    <li className="flex items-center gap-2">
-                      <MessageCircle className="w-4 h-4" />
-                      WhatsApp: +212 775 602 409
-                    </li>
-                  </ul>
-                </div>
-
-                <div>
-                  <h4 className="font-semibold mb-3">Sosyal Medya</h4>
-                  <div className="flex gap-3">
-                    <a href="https://x.com/0xdseller" className="bg-white text-[#8B4513] w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#FFD700] transition-colors">
-                      <X className="w-5 h-5" />
-                    </a>
-                    <a href="mailto:0xdseller@gmail.com
-" className="bg-white text-[#8B4513] w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#FFD700] transition-colors">
-                      <MessageCircle className="w-5 h-5" />
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm">
-                <p>&copy; 2025 sipup.com.tr. Tüm hakları saklıdır.</p>
-              </div>
-            </div>
-          </footer>
         </div>
-        )
+      </section>
+
+      {/* Güvenli Satın Alma Süreci */}
+      <section className="py-20 px-4 bg-white">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
+            Güvenli Satın Alma Süreci
+          </h2>
+
+          <div className="space-y-6">
+            {[
+              { step: 1, title: 'Teklif Verin', desc: 'Formu doldurun ve teklifinizi gönderin' },
+              { step: 2, title: 'Escrow ile Ödeme', desc: 'Atom.com üzerinden güvenli ödeme yapın' },
+              { step: 3, title: '24 Saatte Transfer', desc: 'Domain 24 saat içinde transfer edilir' },
+              { step: 4, title: 'Fatura ve Sertifika', desc: 'Fatura ve mülkiyet sertifikası alın' }
+            ].map((item) => (
+              <div key={item.step} className="flex items-center gap-4">
+                <div className="w-12 h-12 bg-[#8B4513] text-white rounded-full flex items-center justify-center font-bold">
+                  {item.step}
+                </div>
+                <div className="flex-1">
+                  <h3 className="font-semibold text-lg text-[#8B4513]">{item.title}</h3>
+                  <p className="text-gray-600">{item.desc}</p>
+                </div>
+                <Shield className="w-8 h-8 text-green-500" />
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* FAQ */}
+      <section className="py-20 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-4xl font-bold text-center mb-12 text-[#8B4513]" style={{ fontFamily: 'Playfair Display, serif' }}>
+            Sıkça Sorulan Sorular
+          </h2>
+
+          <Accordion type="single" collapsible className="space-y-4">
+            {[
+              { q: 'Domain gerçekten mevcut mu?', a: 'Evet, domain Atom.com üzerinden satın alınabilir durumda ve anında transfer için hazırdır.' },
+              { q: 'İçecekler dışında kullanılabilir mi?', a: 'Evet, ancak içecek sektörü için en uygun ve değerli kullanım alanıdır.' },
+              { q: 'Daha yüksek teklif alırsam ne olur?', a: 'En yüksek teklif kazanır. Sizin teklifinizden daha yüksek bir teklif gelmezse domain sizin olur.' },
+              { q: 'Transfer süreci ne kadar sürer?', a: 'Ödeme onaylandıktan sonra transfer 24 saat içinde tamamlanır.' }
+            ].map((faq, i) => (
+              <AccordionItem key={i} value={`item-${i + 1}`} className="border-2 border-[#8B4513] rounded-lg px-4">
+                <AccordionTrigger className="text-left text-[#8B4513]">{faq.q}</AccordionTrigger>
+                <AccordionContent className="text-gray-700">{faq.a}</AccordionContent>
+              </AccordionItem>
+            ))}
+          </Accordion>
+        </div>
+      </section>
+
+      {/* Footer */}
+      <footer className="bg-[#8B4513] text-white py-12 px-4">
+        <div className="max-w-6xl mx-auto">
+          <div className="grid md:grid-cols-4 gap-8">
+            <div>
+              <h3 className="text-xl font-bold mb-4">sipup.com.tr</h3>
+              <p className="text-sm opacity-90">Türkiye'nin premium kahve teslimat domaini</p>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3">Hızlı Linkler</h4>
+              <ul className="space-y-2 text-sm">
+                <li><a href="#offer-form" className="hover:text-[#FFD700] transition-colors">Teklif Formu</a></li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3">İletişim</h4>
+              <ul className="space-y-2 text-sm">
+                <li className="flex items-center gap-2">
+                  <Mail className="w-4 h-4" />
+                  0xdseller@gmail.com
+                </li>
+                <li className="flex items-center gap-2">
+                  <MessageCircle className="w-4 h-4" />
+                  WhatsApp: +212 775 602 409
+                </li>
+              </ul>
+            </div>
+
+            <div>
+              <h4 className="font-semibold mb-3">Sosyal Medya</h4>
+              <div className="flex gap-3">
+                <a href="https://x.com/0xdseller" className="bg-white text-[#8B4513] w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#FFD700] transition-colors">
+                  <X className="w-5 h-5" />
+                </a>
+                <a href="mailto:0xdseller@gmail.com" className="bg-white text-[#8B4513] w-10 h-10 rounded-full flex items-center justify-center hover:bg-[#FFD700] transition-colors">
+                  <Mail className="w-5 h-5" />
+                </a>
+              </div>
+            </div>
+          </div>
+
+          <div className="border-t border-white/20 mt-8 pt-8 text-center text-sm">
+            <p>&copy; {new Date().getFullYear()} sipup.com.tr. Tüm hakları saklıdır.</p>
+          </div>
+        </div>
+      </footer>
+    </div>
+  )
 }
