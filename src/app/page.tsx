@@ -97,10 +97,10 @@ export default function SipUpDomainSales() {
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
-              { emoji: 'TR', title: 'Güçlü Türk Kimliği', desc: '.com.tr = Yerel müşteriler için en yüksek güven seviyesi' },
-              { emoji: 'Coffee', title: 'Kafe ve Teslimat İçin Mükemmel', desc: '"SipUp" = Yudumla ve devam et - mobil uygulamalar için ideal' },
-              { emoji: 'Smartphone', title: 'Mobil Uygulamaya Hazır', desc: 'Kısa, akılda kalıcı, App Store için mükemmel' },
-              { emoji: 'Check', title: 'Yasal Güvenli', desc: 'VoIP ile çakışmaz - içecekler için mükemmel' }
+              { emoji: '🇹🇷', title: 'Güçlü Türk Kimliği', desc: '.com.tr = Yerel müşteriler için en yüksek güven seviyesi' },
+              { emoji: '☕', title: 'Kafe ve Teslimat İçin Mükemmel', desc: '"SipUp" = Yudumla ve devam et - mobil uygulamalar için ideal' },
+              { emoji: '📱', title: 'Mobil Uygulamaya Hazır', desc: 'Kısa, akılda kalıcı, App Store için mükemmel' },
+              { emoji: '✅', title: 'Yasal Güvenli', desc: 'VoIP ile çakışmaz - içecekler için mükemmel' }
             ].map((item, i) => (
               <Card key={i} className="border-2 border-[#8B4513] hover:shadow-lg transition-shadow">
                 <CardHeader className="text-center">
@@ -201,93 +201,104 @@ export default function SipUpDomainSales() {
           </div>
 
           {/* Offer Form */}
-<Card className="mt-12 border-2 border-[#8B4513]">
-  <CardHeader>
-    <CardTitle className="text-2xl text-[#8B4513] text-center">Teklif Formu</CardTitle>
-    <CardDescription className="text-center">
-      $750 üzerindeki teklifler değerlendirilecektir
-    </CardDescription>
-  </CardHeader>
-  <CardContent>
-    <form
-      action="https://api.web3forms.com/submit"
-      method="POST"
-      className="space-y-4"
-    >
-      {/* Access Key الخاص بك — ضعه هنا */}
-      <input type="hidden" name="access_key" value="f055fb63-401a-4e50-aba0-cc9b2ef2b0bb" />
-      
-      {/* حماية من السبام */}
-      <input type="checkbox" name="botcheck" style={{ display: 'none' }} />
-      
-      {/* توجيه إلى صفحة الشكر بعد الإرسال */}
-      <input type="hidden" name="redirect" value="https://sipup.com.tr/teklif-tesekkur" />
-      
-      {/* عنوان الإيميل */}
-      <input type="hidden" name="subject" value="Yeni Teklif: sipup.com.tr" />
+          <Card className="mt-12 border-2 border-[#8B4513]">
+            <CardHeader>
+              <CardTitle className="text-2xl text-[#8B4513] text-center">Teklif Formu</CardTitle>
+              <CardDescription className="text-center">
+                $750 üzerindeki teklifler değerlendirilecektir
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form
+                action="https://api.web3forms.com/submit"
+                method="POST"
+                className="space-y-4"
+              >
+                {/* Access Key الخاص بك — ضعه هنا */}
+                <input type="hidden" name="access_key" value="f055fb63-401a-4e50-aba0-cc9b2ef2b0bb" />
 
-      <div className="grid md:grid-cols-2 gap-4">
-        <div>
-          <Label htmlFor="name">Adınız Soyadınız</Label>
-          <Input
-            id="name"
-            name="name"
-            type="text"
-            required
-            placeholder="Ahmet Yılmaz"
-            className="border-[#8B4513]"
-          />
+                {/* حماية من السبام */}
+                <input type="checkbox" name="botcheck" style={{ display: 'none' }} />
+
+                {/* توجيه إلى صفحة الشكر بعد الإرسال */}
+                <input type="hidden" name="redirect" value="https://sipup.com.tr/teklif-tesekkur" />
+
+                {/* عنوان الإيميل */}
+                <input type="hidden" name="subject" value="Yeni Teklif: sipup.com.tr" />
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <Label htmlFor="name">Adınız Soyadınız</Label>
+                    <Input
+                      id="name"
+                      name="name"
+                      type="text"
+                      required
+                      placeholder="Ahmet Yılmaz"
+                      className="border-[#8B4513]"
+                    />
+                  </div>
+                  <div>
+                    <Label htmlFor="email">E-posta Adresiniz</Label>
+                    <Input
+                      id="email"
+                      name="email"
+                      type="email"
+                      required
+                      placeholder="ahmet@example.com"
+                      className="border-[#8B4513]"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <Label htmlFor="price">Teklif Fiyatı ($)</Label>
+                  <Input
+                    id="price"
+                    name="price"
+                    type="number"
+                    min="750"
+                    required
+                    placeholder="1200"
+                    className="border-[#8B4513]"
+                    onInvalid={(e) => {
+                      const input = e.target as HTMLInputElement
+                      if (input.value && parseFloat(input.value) < 750) {
+                        input.setCustomValidity('Minimum teklif $750 olmalıdır')
+                      } else {
+                        input.setCustomValidity('')
+                      }
+                    }}
+                    onInput={(e) => (e.target as HTMLInputElement).setCustomValidity('')}
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="message">Mesajınız (İsteğe Bağlı)</Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    rows={4}
+                    placeholder="Atom.com üzerinden ödeme yapmak istiyorum..."
+                    className="border-[#8B4513]"
+                  />
+                </div>
+
+                <Button
+                  type="submit"
+                  className="w-full bg-[#8B4513] hover:bg-[#654321] text-white py-3"
+                >
+                  Teklifi Gönder
+                </Button>
+
+                <p className="text-xs text-center text-gray-500 mt-4">
+                  Teklifiniz doğrudan <strong>0xdseller@gmail.com</strong> adresine gönderilecektir.
+                </p>
+              </form>
+            </CardContent>
+          </Card>
         </div>
-        <div>
-          <Label htmlFor="email">E-posta Adresiniz</Label>
-          <Input
-            id="email"
-            name="email"
-            type="email"
-            required
-            placeholder="ahmet@example.com"
-            className="border-[#8B4513]"
-          />
-        </div>
-      </div>
-
-      <div>
-        <Label htmlFor="price">Teklif Fiyatı ($)</Label>
-        <Input
-          id="price"
-          name="price"
-          type="number"
-          min="750"
-          required
-          placeholder="1200"
-          className="border-[#8B4513]"
-        />
-      </div>
-
-      <div>
-        <Label htmlFor="message">Mesajınız (İsteğe Bağlı)</Label>
-        <Textarea
-          id="message"
-          name="message"
-          rows={4}
-          placeholder="Atom.com üzerinden ödeme yapmak istiyorum..."
-          className="border-[#8B4513]"
-        />
-      </div>
-
-      <Button
-        type="submit"
-        className="w-full bg-[#8B4513] hover:bg-[#654321] text-white py-3"
-      >
-        Teklifi Gönder
-      </Button>
-
-      <p className="text-xs text-center text-gray-500 mt-4">
-        Teklifiniz doğrudan <strong>0xdseller@gmail.com</strong> adresine gönderilecektir.
-      </p>
-    </form>
-  </CardContent>
-</Card>
+      </section>
 
       {/* Güvenli Satın Alma Süreci */}
       <section className="py-20 px-4 bg-white">
