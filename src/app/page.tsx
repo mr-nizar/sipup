@@ -201,98 +201,93 @@ export default function SipUpDomainSales() {
           </div>
 
           {/* Offer Form */}
-          <Card className="mt-12 border-2 border-[#8B4513]">
-            <CardHeader>
-              <CardTitle className="text-2xl text-[#8B4513] text-center">Teklif Formu</CardTitle>
-              <CardDescription className="text-center">
-                $750 üzerindeki teklifler değerlendirilecektir
-              </CardDescription>
-            </CardHeader>
-            <CardContent>
-              <form
-                action="https://formsubmit.co/0xdseller@gmail.com"
-                method="POST"
-                className="space-y-4"
-              >
-                <input type="text" name="_honey" style={{ display: 'none' }} />
-                <input type="hidden" name="_captcha" value="false" />
-                <input type="hidden" name="_next" value="https://sipup.com.tr/teklif-tesekkur" />
-                <input type="hidden" name="_subject" value="Yeni Teklif: sipup.com.tr" />
-                <input type="hidden" name="_template" value="table" />
+<Card className="mt-12 border-2 border-[#8B4513]">
+  <CardHeader>
+    <CardTitle className="text-2xl text-[#8B4513] text-center">Teklif Formu</CardTitle>
+    <CardDescription className="text-center">
+      $750 üzerindeki teklifler değerlendirilecektir
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <form
+      action="https://api.web3forms.com/submit"
+      method="POST"
+      className="space-y-4"
+    >
+      {/* Access Key الخاص بك — ضعه هنا */}
+      <input type="hidden" name="access_key" value="f055fb63-401a-4e50-aba0-cc9b2ef2b0bb" />
+      
+      {/* حماية من السبام */}
+      <input type="checkbox" name="botcheck" style={{ display: 'none' }} />
+      
+      {/* توجيه إلى صفحة الشكر بعد الإرسال */}
+      <input type="hidden" name="redirect" value="https://sipup.com.tr/teklif-tesekkur" />
+      
+      {/* عنوان الإيميل */}
+      <input type="hidden" name="subject" value="Yeni Teklif: sipup.com.tr" />
 
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div>
-                    <Label htmlFor="name">Adınız Soyadınız</Label>
-                    <Input
-                      id="name"
-                      name="name"
-                      type="text"
-                      required
-                      placeholder="Ahmet Yılmaz"
-                      className="border-[#8B4513]"
-                    />
-                  </div>
-                  <div>
-                    <Label htmlFor="email">E-posta Adresiniz</Label>
-                    <Input
-                      id="email"
-                      name="email"
-                      type="email"
-                      required
-                      placeholder="ahmet@example.com"
-                      className="border-[#8B4513]"
-                    />
-                  </div>
-                </div>
-
-                <div>
-                  <Label htmlFor="price">Teklif Fiyatı ($)</Label>
-                  <Input
-                    id="price"
-                    name="price"
-                    type="number"
-                    min="750"
-                    required
-                    placeholder="1200"
-                    className="border-[#8B4513]"
-                    onInvalid={(e) => {
-                      const input = e.target as HTMLInputElement
-                      if (input.value && parseFloat(input.value) < 750) {
-                        input.setCustomValidity('Minimum teklif $750 olmalıdır')
-                      } else {
-                        input.setCustomValidity('')
-                      }
-                    }}
-                    onInput={(e) => (e.target as HTMLInputElement).setCustomValidity('')}
-                  />
-                </div>
-
-                <div>
-                  <Label htmlFor="message">Mesajınız (İsteğe Bağlı)</Label>
-                  <Textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    placeholder="Atom.com üzerinden ödeme yapmak istiyorum..."
-                    className="border-[#8B4513]"
-                  />
-                </div>
-
-                <Button
-                  type="submit"
-                  className="w-full bg-[#8B4513] hover:bg-[#654321] text-white py-3"
-                >
-                  Teklifi Gönder
-                </Button>
-
-                <p className="text-xs text-center text-gray-500 mt-4">
-                  Teklifiniz doğrudan <strong>0xdseller@gmail.com</strong> adresine gönderilecektir.
-                </p>
-              </form>
-            </CardContent>
-          </Card>
+      <div className="grid md:grid-cols-2 gap-4">
+        <div>
+          <Label htmlFor="name">Adınız Soyadınız</Label>
+          <Input
+            id="name"
+            name="name"
+            type="text"
+            required
+            placeholder="Ahmet Yılmaz"
+            className="border-[#8B4513]"
+          />
         </div>
-      </section>
+        <div>
+          <Label htmlFor="email">E-posta Adresiniz</Label>
+          <Input
+            id="email"
+            name="email"
+            type="email"
+            required
+            placeholder="ahmet@example.com"
+            className="border-[#8B4513]"
+          />
+        </div>
+      </div>
+
+      <div>
+        <Label htmlFor="price">Teklif Fiyatı ($)</Label>
+        <Input
+          id="price"
+          name="price"
+          type="number"
+          min="750"
+          required
+          placeholder="1200"
+          className="border-[#8B4513]"
+        />
+      </div>
+
+      <div>
+        <Label htmlFor="message">Mesajınız (İsteğe Bağlı)</Label>
+        <Textarea
+          id="message"
+          name="message"
+          rows={4}
+          placeholder="Atom.com üzerinden ödeme yapmak istiyorum..."
+          className="border-[#8B4513]"
+        />
+      </div>
+
+      <Button
+        type="submit"
+        className="w-full bg-[#8B4513] hover:bg-[#654321] text-white py-3"
+      >
+        Teklifi Gönder
+      </Button>
+
+      <p className="text-xs text-center text-gray-500 mt-4">
+        Teklifiniz doğrudan <strong>0xdseller@gmail.com</strong> adresine gönderilecektir.
+      </p>
+    </form>
+  </CardContent>
+</Card>
 
       {/* Güvenli Satın Alma Süreci */}
       <section className="py-20 px-4 bg-white">
